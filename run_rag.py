@@ -26,8 +26,10 @@ def main():
     DOCUMENTS_PATH = "data/processed/documents.json"
     QUERIES_PATH = "leaderboard_queries.json"
     OUTPUT_PATH = "system_outputs/system_output_2.json"
+    REPROCESS_DOCS = False
+
+    # Fixed Andrew ID
     ANDREW_ID = "Magmar" 
-    REPROCESS_DOCS = False 
 
     # Model options:
     # - "microsoft/Phi-3-mini-4k-instruct" (3.8B, good balance) 

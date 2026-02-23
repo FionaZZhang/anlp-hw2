@@ -11,6 +11,9 @@ from document_processor import process_documents
 from retriever import HybridRetriever, DenseRetriever, SparseRetriever
 from generator import AnswerGenerator, SimpleGenerator
 
+# Fixed Andrew ID
+ANDREW_ID = "Magmar"
+
 
 class RAGPipeline:
     """End-to-end RAG pipeline for question answering."""
@@ -87,21 +90,18 @@ class RAGPipeline:
             ]
         }
 
-    def process_queries(self, queries_path: str, output_path: str, andrew_id: str = None):
+    def process_queries(self, queries_path: str, output_path: str):
         """
         Process a list of queries and save results.
 
         Args:
             queries_path: Path to queries JSON file
             output_path: Path to save results
-            andrew_id: Andrew ID for leaderboard submission
         """
         with open(queries_path, 'r') as f:
             queries = json.load(f)
 
-        results = {}
-        if andrew_id:
-            results["andrewid"] = andrew_id
+        results = {"andrewid": ANDREW_ID}
 
         print(f"Processing {len(queries)} queries...")
         for query in tqdm(queries):
@@ -126,7 +126,6 @@ def main():
     parser.add_argument('--documents_path', default='data/processed/documents.json', help='Path to processed documents')
     parser.add_argument('--queries_path', default='leaderboard_queries.json', help='Path to queries JSON')
     parser.add_argument('--output_path', default='system_outputs/system_output_1.json', help='Path for output')
-    parser.add_argument('--andrew_id', default=None, help='Andrew ID for leaderboard')
     parser.add_argument('--retriever', default='hybrid', choices=['dense', 'sparse', 'hybrid'], help='Retriever type')
     parser.add_argument('--model', default='microsoft/Phi-3-mini-4k-instruct', help='LLM model name')
     parser.add_argument('--top_k', type=int, default=5, help='Number of documents to retrieve')
@@ -149,7 +148,7 @@ def main():
 
     # Process queries
     Path(args.output_path).parent.mkdir(parents=True, exist_ok=True)
-    pipeline.process_queries(args.queries_path, args.output_path, args.andrew_id)
+    pipeline.process_queries(args.queries_path, args.output_path)
 
 
 if __name__ == "__main__":
